@@ -1,0 +1,163 @@
+<form ng-submit="postSurvey()">
+	<div style="height: 30px; margin-bottom: 5px;">
+		<div style="float: right;">
+			<md-button type="submit" class="md-raised md-primary">Save Survey</md-button>
+		</div>
+	</div>
+	<div class="single-question">
+		<div style="height: 30px; border-bottom: 1px solid #1F75B0; margin-top: 10px;">
+			Country: <strong>{{headers.country.nameEn}}</strong>
+			<input type="hidden" ng-model="headers.country.nameEn" ng-bind="headers.country.nameEn" value="{{headers.country.nameEn}}"/>
+		</div>
+		<div style="border-bottom: 1px solid #1F75B0; margin-top: 10px;">
+			<md-input-container flex>
+				<label>Prepared By</label>
+				<textarea ng-model="headers.preparedBy" columns="1" id="txt_preparedBy">{{headers.preparedBy}}</textarea>
+			</md-input-container>
+		</div>
+
+		<div style="border-bottom: 1px solid #1F75B0; margin-top: 10px;">
+			Date:&nbsp;<strong>{{headers.date}}</strong>
+		</div>
+	</div>
+
+	<div style="height: 30px; border-bottom: 1px solid #1F75B0; margin-top: 10px;margin-bottom: 6px;"></div>
+
+	<div ng-repeat="question in questions" class="single-question">
+		<p class="question-counter">Question #{{$index + 1}}</p>
+		<p class="question-text">{{question.text_e}}</p>
+		<div style="visibility: hidden; width: 0px;">{{questionCounter=$index}}</div>
+		<div ng-repeat="table in question.tables">
+			<div layout="row">
+				<div ng-repeat="header in table.header_e" ng-bind-html="header" class="column-header" style="width: {{table.ratio}}%"></div>
+			</div>
+			<div style="visibility: hidden; width: 0px;">{{tableName=table.name}}</div>
+			<div layout="row" ng-repeat="row in table.matrix track by $index">
+				<div style="visibility: hidden; width: 0px;">{{myRowCounter=$index}}</div>
+				<div ng-repeat="cell in row.cells" class="column-tbl" style="width: {{table.ratio}}%; position: relative;">
+					<div style="visibility: hidden; width: 0px;">{{columnIndex=$index}}</div>
+					<!-- Q8Table has a different rendering-->
+					<div ng-if="tableName == 'q8Table'">		
+						<div ng-if="columnIndex == 0">
+							<!--<md-autocomplete
+										md-selected-item="selectedItem"
+										md-search-text-change="searchTextChange(searchText)"
+										md-search-text="searchText"
+										md-selected-item-change="selectedItemChange(item, $event)"
+										md-items="item in querySearch(searchText)"
+										md-item-text="item.display"
+										md-min-length="0"
+										ng-attr-id="{{cell.fields[0].name + '_' + myRowCounter}}"
+										placeholder="{{cell.fields[0].original}}"
+										ng-model="Answers[cell.fields[0].htmlId]">
+									<span md-highlight-text="searchText" md-highlight-flags="^i">{{item.display}}</span>
+								</md-autocomplete>-->
+						</div>
+						<div ng-if="columnIndex != 0">
+							<div ng-repeat="field in cell.fields" style="border-bottom: 1px solid; width: 100%; height: 150px; text-align: left;">
+								<div style="visibility: hidden; width: 0px;">{{fieldIndex=$index}}</div>
+								<div style="margin-left: 20px;">
+									<!--<md-checkbox ng-repeat="select in field.renderCheckBox" 
+															 ng-model="Answers[select.id]"	
+															 class="md-primary">{{select.value}}</md-checkbox> -->
+									<div ng-repeat="select in field.renderCheckBox" style="text-align: left;">
+										<input type="checkbox" ng-model="Answers[select.id]" ng-checked="{{select.selected == true}}" ng-true-value="true" ng-false-value="false">{{select.value}}
+									</div>  
+								</div>
+							</div>  
+						</div>
+						<div ng-if="row.multi == 1 && $index == row.cells.length - 1" style="position: absolute; bottom: 2px; right: 0;">
+							<md-button type="button" class="md-raised md-primary add-romove-button" ng-click="removeRow($event, questionCounter+1, myRowCounter);">-</md-button>
+							<md-button type="button" class="md-raised md-primary add-romove-button" ng-click="addRow(questionCounter+1, myRowCounter);">+</md-button>
+						</div>
+					</div>
+
+
+					<div ng-if="tableName != 'q8Table'">          
+						<div ng-repeat="field in cell.fields">
+							<div ng-if="field.type == 0">
+								<p>{{field.text_e}}</p>
+							</div>
+							<div ng-if="field.type == 1">
+								<!--<md-input-container flex>-->
+										<label>{{field.text_e}}</label>
+										<textarea ng-model="field.value" columns="8" ng-model="Answers[field.htmlId]">{{field.value}}</textarea>
+								<!--</md-input-container>-->
+							</div>
+							<div ng-if="field.type == 2">
+								<!--<md-radio-group ng-model="Answers[field.htmlId]">
+									<div ng-repeat="cl in controlledLists[field.controlledList]" style="text-align: left;">
+										<md-radio-button value="{{cl.key}}" class="md-primary">{{cl.text_e}}</md-radio-button>
+									</div>
+								</md-radio-group>-->
+								<fieldset >
+									<div ng-repeat="cl in controlledLists[field.controlledList]" style="text-align: left;">
+										<input type="radio" ng-model="Answers[field.htmlId]" value="{{cl.key}}"/>{{cl.text_e}} [{{field.htmlId}}]
+									</div>
+								</fieldset>	
+							</div>
+							<div ng-if="field.type == 3" style="text-align: left;">
+								<!--<md-checkbox ng-repeat="select in field.renderCheckBox" value="select.key" ng-model="Answers[select.id]" ng-checked="{{select.selected == true}}" class="md-primary">{{select.value}}</md-checkbox>-->
+								<div ng-repeat="select in field.renderCheckBox" style="text-align: left;">
+									<input type="checkbox" ng-model="Answers[select.id]" ng-checked="{{select.selected == true}}" ng-true-value="true" ng-false-value="false">{{select.value}}
+								</div>
+							</div>
+							<div ng-if="field.type == 5">
+								<select name="{{field.name}}" ng-model="Answers[field.htmlId]">
+									<option ng-repeat="select in field.renderDropDown" value="select.key" ng-selected="{{select.selected == true}}">{{select.value}}</option>
+								</select>
+							</div>
+							<div ng-if="field.type == 6">
+								<div ng-dropdown-multiselect="" options="countries" selected-model="field.selectedBox" extra-settings="selectBoxProperties" ng-model="Answers[field.htmlId]"></div>
+							</div>
+							<div ng-if="field.type == 9">
+								<!--<md-autocomplete
+										md-selected-item="selectedItem"
+										md-search-text-change="searchTextChange(searchText)"
+										md-search-text="searchText"
+										md-selected-item-change="selectedItemChange(item, $event)"
+										md-items="item in querySearch(searchText)"
+										md-item-text="item.display"
+										md-min-length="0"
+										ng-attr-id="{{field.name + '_' + myRowCounter}}"
+										placeholder="{{field.original}}"
+										ng-model="Answers[field.htmlId]">
+									<span md-highlight-text="searchText" md-highlight-flags="^i">{{item.display}}</span>
+								</md-autocomplete>-->
+							</div>
+						</div>
+						<div ng-if="row.multi == 1 && $index == row.cells.length - 1" style="position: absolute; bottom: 2px; right: 0;">
+							<md-button type="button" class="md-raised md-primary add-romove-button" ng-click="removeRow($event, questionCounter+1, myRowCounter);">-</md-button>
+							<md-button type="button" class="md-raised md-primary add-romove-button" ng-click="addRow(questionCounter+1, myRowCounter);">+</md-button>
+						</div>
+					</div>
+				</div> 
+			</div>
+		</div>
+
+		<div ng-repeat="field in question.fields">
+			<div ng-if="field.type == 1 ">
+				<label>{{field.text_e}}</label>
+				<textarea columns="8" ng-model="Answers[field.htmlId]">{{field.value}}</textarea>
+			</div>
+			<div ng-if="field.type == 2 ">
+				<fieldset >
+					<div ng-repeat="cl in controlledLists[field.controlledList]">
+						<input type="radio" ng-model="Answers[field.htmlId]" value="{{cl.key}}"/>{{cl.text_e}} [{{field.htmlId}}]
+					</div>
+				</fieldset>	
+				<br />
+			</div>
+			<div ng-if="field.type == 3 ">
+				<fieldset layout="column">
+						<md-checkbox ng-model="Answers[field.htmlId]" ng-repeat="cl in controlledLists[field.controlledList]">{{cl.text_e}}</md-checkbox>
+				</fieldset>
+			</div>
+		</div>
+	</div> 
+
+
+	<div style="float: right;">
+		<md-button type="submit" class="md-raised md-primary">Save Survey</md-button>
+	</div>
+</form>

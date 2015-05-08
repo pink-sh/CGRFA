@@ -1,0 +1,96 @@
+<!doctype html>
+<html lang="en" ng-app="cgrfa">
+<head>
+  <base href="/cgrfa/">
+  <meta charset="UTF-8">
+  <title>AqGR Survey</title>
+  <base href="/cgrfa/">
+  <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/angular_material/0.8.3/angular-material.min.css">
+  <link rel="stylesheet" href="css/cgrfa.css">
+  <link rel="stylesheet" href="multiselect-style.css">
+  <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
+
+  <!-- Generic page styles -->
+  <link rel="stylesheet" href="css/jquery-file-upload/style.css">
+  <!-- blueimp Gallery styles -->
+  <link rel="stylesheet" href="//blueimp.github.io/Gallery/css/blueimp-gallery.min.css">
+  <!-- CSS to style the file input field as button and adjust the Bootstrap progress bars -->
+  <link rel="stylesheet" href="css/jquery-file-upload/jquery.fileupload.css">
+  <link rel="stylesheet" href="css/jquery-file-upload/jquery.fileupload-ui.css">
+  <!-- CSS adjustments for browsers with JavaScript disabled -->
+  <noscript><link rel="stylesheet" href="css/jquery-file-upload/jquery.fileupload-noscript.css"></noscript>
+  <noscript><link rel="stylesheet" href="css/jquery-file-upload/jquery.fileupload-ui-noscript.css"></noscript>
+
+  <link rel="stylesheet" href="css/titip.min.css">
+  <link rel="stylesheet" href="css/addon/effect-light.min.css">
+
+
+  <script type="text/javascript" src="js/jquery.min.js"></script>
+  <script type="text/javascript" src="js/jquery-dateFormat.min.js"></script>
+  <script type="text/javascript" src="angular/bower_components/lodash/dist/lodash.min.js"></script>
+  <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.15/angular.min.js"></script>
+  <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.15/angular-animate.min.js"></script>
+  <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.15/angular-aria.min.js"></script>
+  <!--<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/angular_material/0.8.3/angular-material.min.js"></script>-->
+  <script type="text/javascript" src="js/angular-material.js"></script>
+  <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.15/angular-sanitize.min.js"></script>
+  <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.15/angular-route.min.js"></script>
+  <script type="text/javascript" src="angular/bower_components/restangular/dist/restangular.min.js"></script>
+
+  <script type="text/javascript" src="js/ui-bootstrap-0.13.0.min.js"></script>
+  <script type="text/javascript" src="js/ui-bootstrap-tpls-0.13.0.min.js"></script>
+  <!--<script type="text/javascript" src="js/angularjs-dropdown-multiselect.min.js"></script>-->
+  <script type="text/javascript" src="js/angularjs-dropdown-multiselect.min.js"></script>
+  <script type="text/javascript" src="js/dropzone.js"></script>
+  <script type="text/javascript" src="js/bootstrap-datepicker.min.js"></script>
+  <script type="text/javascript" src="js/textarea-fit.js"></script>
+
+  <script src="js/cgrfa.js"></script>
+
+  <script src="js/jquery-file-upload/vendor/jquery.ui.widget.js"></script>
+  <script src="//blueimp.github.io/JavaScript-Load-Image/js/load-image.all.min.js"></script>
+  <script src="//blueimp.github.io/JavaScript-Canvas-to-Blob/js/canvas-to-blob.min.js"></script>
+  <script src="//netdna.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+  <script src="//blueimp.github.io/Gallery/js/jquery.blueimp-gallery.min.js"></script>
+  <script src="js/jquery-file-upload/jquery.iframe-transport.js"></script>
+  <script src="js/jquery-file-upload/jquery.fileupload.js"></script>
+  <script src="js/jquery-file-upload/jquery.fileupload-process.js"></script>
+  <script src="js/jquery-file-upload/jquery.fileupload-image.js"></script>
+  <script src="js/jquery-file-upload/jquery.fileupload-audio.js"></script>
+  <script src="js/jquery-file-upload/jquery.fileupload-video.js"></script>
+  <script src="js/jquery-file-upload/jquery.fileupload-validate.js"></script>
+  <script src="js/jquery-file-upload/jquery.fileupload-angular.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/angular-strap/2.1.2/angular-strap.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/angular-strap/2.1.2/angular-strap.tpl.min.js"></script>
+
+
+
+</head>
+<body>
+  <div id="wait-loading" class="wait-loading" ng-cloak>
+      <img src="img/ajax-loader.gif">
+  </div>
+  <div class="main-top">
+  	<iframe id="banner" src="banner/" width="100%" height="75" border="0" frameborder="0" scrolling="no"></iframe>
+    <div class="main-nav">
+      <nav class="navbar navbar-default" role="navigation" bs-navbar>
+  <div class="navbar-header">
+    <a class="navbar-brand" href="/cgrfa/">Home</a>
+  </div>
+  <ul class="nav navbar-nav">
+    <li data-match-route="/upload"><a href="/cgrfa/upload">Upload a survey</a></li>
+    <li data-match-route="/list"><a href="/cgrfa/list">Inserted surveys</a></li>
+    <li data-match-route="/newForm"><a href="/cgrfa/newForm">New survey</a></li>
+  </ul>
+</nav>
+    </div>
+  </div>
+
+   	<div ng-controller="uploadController" ng-cloak layout="column">
+      <md-content flex layout-padding style="background-color: #eeeeee; top: 150px;">
+        <div ng-view></div>
+      </md-content>
+    </div>
+
+</body>
+</html>

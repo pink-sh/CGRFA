@@ -1,0 +1,48 @@
+<div ng-if="!listOfSurvey" class="error">
+	No Records found
+</div>
+<div ng-if="listOfSurvey">
+	<div style="width:100%; height: 80px; position: relative;">
+		<div style="margin-left: 20px; margin-bottom: 5px; width: 50%; float:left; position: absolute;">
+			<md-input-container flex>
+				<label>Filter list by country</label>
+				<input type="text" ng-model="searchText">
+			</md-input-container>
+		</div>
+		<div style="float:right; position: relative; width: 40%; margin-right: 20px; padding-top: 30px; text-align: right;">
+			<a href="{{reportLink}}" target="_blank">Download Status Report</a>
+		</div>
+	</div>
+	<div ng-repeat="survey in listOfSurvey | filter:searchText" style="margin-left: 1%; margin-right: 1%; margin-bottom: 6px; height: 160px; box-shadow: 3px 3px 5px #888888;">
+		<div ng-class-odd="'list-odd'" ng-class-even="'list-even'">
+			<div style="width: 30%; height: 100%; float: left;">
+				<div style="height: 35%; width: 100%">
+					<div class="list_image">
+						<img src="{{survey.bulletImage}}"></img>
+					</div>
+					<div class="list_flag"><img src="img/flags_iso/32/{{survey.countryIso2}}.png"></div>
+					<div class="list_country_name">
+						<div style="min-width: 100px"><strong><a href="form/{{survey.id}}" class="list-link">{{survey.country}}</a></strong></div>
+					</div>
+				</div>
+				<div style="height: 63%; width: 60%; padding-left: 40px;">
+					<div>
+						Date: {{survey.date}}
+					</div>
+					<div>
+						Prepared By: {{survey.preparedBy}}
+					</div>
+					<div ng-if="survey.file != null">
+						Original PDF: <a href="{{survey.file}}" target="_blank"><img src="img/pdf.png" height="35px" width="35px"></a>
+					</div>
+				</div>
+			</div>
+			<div ng-class="'verticalLine_' + ($index % 2)"></div>
+			<div style="width: 30%; height: 70%; float: left; margin-top: 50px;">
+				<div style="font-size: 11px;">Accepted: <strong>{{survey.accepted}}</strong></div>
+				<div style="font-size: 11px;">Under Revision: <strong>{{survey.underRevision}}</strong></div>
+				<div style="font-size: 11px;">Rejected: <strong>{{survey.rejected}}</strong></div>
+			</div>
+		</div>
+	</div>
+</div>

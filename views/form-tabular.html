@@ -1,0 +1,201 @@
+<form ng-submit="postSurvey()">
+	<div style="height: 30px; margin-bottom: 5px;">
+		<div style="float: right;">
+			<md-button type="submit" class="md-raised md-primary">Save Survey</md-button>
+		</div>
+	</div>
+	<div class="single-question">
+		<div style="height: 30px; border-bottom: 1px solid #1F75B0; margin-top: 10px;">
+			Country: <strong>{{headers.country.nameEn}}</strong>
+			<input type="hidden" ng-model="headers.country.nameEn" ng-bind="headers.country.nameEn" value="{{headers.country.nameEn}}"/>
+		</div>
+		<div style="border-bottom: 1px solid #1F75B0; margin-top: 10px;">
+			<md-input-container flex>
+				<label>Prepared By</label>
+				<textarea ng-model="headers.preparedBy" columns="1" id="txt_preparedBy">{{headers.preparedBy}}</textarea>
+			</md-input-container>
+		</div>
+
+		<div style="border-bottom: 1px solid #1F75B0; margin-top: 10px;">
+			Date:&nbsp;<strong>{{headers.date}}</strong>
+		</div>
+	</div>
+
+	<div style="height: 30px; border-bottom: 1px solid #1F75B0; margin-top: 10px;margin-bottom: 6px;"></div>
+
+	<md-tabs md-selected="selectedIndex" md-border-bottom>
+		<md-tab ng-repeat="question in questions"
+	              ng-disabled="false"
+	              label="{{question.title}}"> <!--ng-repeat="question in questions" class="single-question">-->
+
+	        <div style="width: 100%; position: relative; height: 70px;">
+		        <div style="width:20%; margin-left: 10px; margin-right: 10px; padding-top: 30px; float: left; position: relative;">
+		        	<md-slider flex class="md-primary" md-discrete ng-model="questionStatus[question.id].status" step="1" min="0" max="2" aria-label="Question status"></md-slider>
+		        </div>
+		        <div style="width:20%; margin-left: 10px; margin-right: 10px; padding-top: 30px; float: left; position: relative;">
+		        	<div ng-if="questionStatus[question.id].status == 0" style="padding-top: 6px; font-size: 20px; color: #D50000">Rejected</div>
+		        	<div ng-if="questionStatus[question.id].status == 1" style="padding-top: 6px; font-size: 20px; color: #BC9B00">Under Revision</div>
+		        	<div ng-if="questionStatus[question.id].status == 2" style="padding-top: 6px; font-size: 20px; color: #009A0E">Approved</div>
+		        </div>
+	    	</div>
+	        <div class="single-question">
+				<p class="question-text">{{question.text_e}}</p>
+				<div style="visibility: hidden; width: 0px;">{{questionCounter=$index}}</div>
+				<div ng-repeat="table in question.tables">
+					<div layout="row">
+						<div ng-repeat="header in table.header_e" ng-bind-html="header" class="column-header" style="width: {{table.ratio}}%"></div>
+					</div>
+					<div style="visibility: hidden; width: 0px;">{{tableName=table.name}}</div>
+					<div layout="row" ng-repeat="row in table.matrix track by $index">
+						<div style="visibility: hidden; width: 0px;">{{myRowCounter=$index}}</div>
+						<div ng-repeat="cell in row.cells" class="column-tbl" style="width: {{table.ratio}}%; position: relative;">
+							<div style="visibility: hidden; width: 0px;">{{columnIndex=$index}}</div>
+							<!-- Q8Table has a different rendering-->
+							<div ng-if="tableName == 'q8Table'">		
+								<div ng-if="columnIndex == 0">
+										<div ng-if="debug == true">HTMLiD: [{{cell.fields[0].htmlId}}]</div>
+										<input type="text" 
+													 ng-model="selected" 
+													 typeahead="spc as spc.display for spc in Species | filter:$viewValue | limitTo:15" 
+													 class="form-control"
+													 placeholder="{{cell.fields[0].original}}"
+													 typeahead-on-select="selectedTypeAheadValue($item, $model, $label, cell.fields[0].htmlId)">
+								</div>
+								<div ng-if="columnIndex == 1">
+									<div ng-repeat="field in cell.fields" style="border-bottom: 1px solid; width: 100%; height: 150px; text-align: left;">
+										<div ng-if="debug == true">HTMLiD: [{{field.htmlId}}]</div>
+										<div style="visibility: hidden; width: 0px;">{{fieldIndex=$index}}</div>
+										<div style="margin-left: 20px;">
+											<md-checkbox ng-repeat="select in field.renderCheckBox" 
+														 ng-model="Answers[select.id]"
+														 ng-true-value="{{select.key}}"
+														 ng-false-value="null"
+														 class="md-primary">{{select.value}}</md-checkbox>   
+										</div>
+									</div>  
+								</div>
+								<div ng-if="columnIndex == 2">
+									<div ng-repeat="field in cell.fields" style="border-bottom: 1px solid; width: 100%; height: 150px; text-align: left;">
+										<div ng-if="debug == true">HTMLiD: [{{field.htmlId}}]</div>
+										<div style="visibility: hidden; width: 0px;">{{fieldIndex=$index}}</div>
+										<div style="margin-left: 20px;">
+											<md-checkbox ng-repeat="select in field.renderCheckBox" 
+														 ng-model="Answers[select.id]"
+														 ng-true-value="{{select.key}}"
+														 ng-false-value="0"
+														 class="md-primary">{{select.value}}</md-checkbox>   
+										</div>
+									</div>  
+								</div>
+								<div ng-if="row.multi == 1 && $index == row.cells.length - 1" style="position: absolute; bottom: 2px; right: 0;">
+									<md-button type="button" class="md-raised md-primary add-romove-button" ng-click="removeRow($event, questionCounter+1, myRowCounter);">-</md-button>
+									<md-button type="button" class="md-raised md-primary add-romove-button" ng-click="addRow(questionCounter+1, myRowCounter);">+</md-button>
+								</div>
+							</div>
+
+
+							<div ng-if="tableName != 'q8Table'">          
+								<div ng-repeat="field in cell.fields">
+									<div ng-if="field.type == 0">
+										<p>{{field.text_e}}</p>
+									</div>
+									<div ng-if="field.type == 1">
+										<div ng-if="debug == true">HTMLiD: [{{field.htmlId}}]</div>
+										<!--<md-input-container flex>
+												<label>{{field.text_e}}</label>
+												<textarea columns="8" ng-model="Answers[field.htmlId]">{{field.value}}</textarea>
+										</md-input-container> -->
+										<textarea ng-model="Answers[field.htmlId]" ng-trim="0" textarea-fit style="width: 99%; min-height: 100px !important;">{{field.value}}</textarea>
+									</div>
+									<div ng-if="field.type == 2">
+										<div ng-if="debug == true">HTMLiD: [{{field.htmlId}}]</div>
+										<md-radio-group ng-model="Answers[field.htmlId]">
+											<div ng-repeat="cl in controlledLists[field.controlledList]" style="text-align: left;">
+												<md-radio-button value="{{cl.key}}" class="md-primary">{{cl.text_e}}</md-radio-button>
+											</div>
+										</md-radio-group>
+									</div>
+									<div ng-if="field.type == 3" style="text-align: left;">
+										<div ng-if="debug == true">HTMLiD: [{{field.htmlId}}]</div>
+										<md-checkbox ng-repeat="select in field.renderCheckBox" 
+													 value="{{select.key}}" 
+													 ng-model="Answers[select.id]"
+													 ng-true-value="{{select.key}}"
+													 ng-false-value="0"
+													 class="md-primary">{{select.value}}</md-checkbox>
+									</div>
+									<div ng-if="field.type == 4" style="">
+										<div ng-if="debug == true">HTMLiD: [{{field.htmlId}}]</div>
+										<div style="border-bottom: 1px solid #1F75B0; margin-top: 10px;">
+											<input type="date" class="form-control" 
+												   datepicker-popup ng-model="Answers[field.htmlId]" 
+												   is-open="opened" 
+												   datepicker-options="dateOptions" 
+												   close-text="Close" 
+												   style="width: 200px; margin-left: auto; margin-right: auto;"/>
+										</div>
+									</div>
+									<div ng-if="field.type == 5">
+										<div ng-if="debug == true">HTMLiD: [{{field.htmlId}}]</div>
+										<select name="{{field.name}}" >
+											<option ng-repeat="select in field.renderDropDown" value="{{select.key}}" ng-model="Answers[field.htmlId]" ng-selected="{{select.selected == true}}">{{select.value}}</option>
+										</select>
+									</div>
+									<div ng-if="field.type == 6">
+										<div ng-if="debug == true">HTMLiD: [{{field.htmlId}}]</div>
+										<div ng-dropdown-multiselect="" 
+											 options="countries" 
+											 selected-model="Answers[field.htmlId]" 
+											 events="selectBoxEvents"></div>
+									</div>
+									<div ng-if="field.type == 9">
+										<div ng-if="debug == true">HTMLiD: [{{field.htmlId}}]</div>
+										<input type="text" 
+										       ng-model="selected" 
+											   typeahead="spc as spc.display for spc in Species | filter:$viewValue | limitTo:15" 
+											   class="form-control"
+											   placeholder="{{field.original}}"
+											   typeahead-on-select="selectedTypeAheadValue($item, $model, $label, field.htmlId)">
+										<!--<span md-highlight-text="searchText" md-highlight-flags="^i">{{item.display}}</span>
+										</md-autocomplete>-->
+									</div>
+								</div>
+								<div ng-if="row.multi == 1 && $index == row.cells.length - 1" style="position: absolute; bottom: 2px; right: 0;">
+									<md-button type="button" class="md-raised md-primary add-romove-button" ng-click="removeRow($event, questionCounter+1, myRowCounter);">-</md-button>
+									<md-button type="button" class="md-raised md-primary add-romove-button" ng-click="addRow(questionCounter+1, myRowCounter);">+</md-button>
+								</div>
+							</div>
+						</div> 
+					</div>
+				</div>
+
+				<div ng-repeat="field in question.fields">
+					<div ng-if="field.type == 1 ">
+						<div ng-if="debug == true">HTMLiD: [{{field.htmlId}}]</div>
+						<!--<md-input-container flex>
+							<label>{{field.text_e}}</label>
+							<textarea id="{{field.htmlId}}" ng-model="Answers[field.htmlId]" class="input-scroll">{{field.value}}</textarea>
+						</md-input-container>-->
+						{{field.text_e}}<br/>
+						<textarea ng-model="Answers[field.htmlId]" ng-trim="0" textarea-fit style="width: 99%; min-height: 100px !important;">{{field.value}}</textarea>
+					</div>
+					<div ng-if="field.type == 2 ">
+						<div ng-if="field.text_e != null ">{{field.text_e}}</div>
+						<div ng-if="debug == true">HTMLiD: [{{field.htmlId}}]</div>
+						<md-radio-group ng-model="Answers[field.htmlId]">
+								<div ng-repeat="cl in controlledLists[field.controlledList]">
+								<md-radio-button value="{{cl.key}}" class="md-primary">{{cl.text_e}}</md-radio-button>
+							</div>
+						</md-radio-group>
+					</div>
+					<div ng-if="field.type == 3 ">
+						<div ng-if="debug == true">HTMLiD: [{{field.htmlId}}]</div>
+						<fieldset layout="column">
+								<md-checkbox ng-model="Answers[field.htmlId]" ng-repeat="cl in controlledLists[field.controlledList]">{{cl.text_e}}</md-checkbox>
+						</fieldset>
+					</div>
+				</div>
+			</div>
+		</md-tab>
+	</md-tabs>
+</form>
