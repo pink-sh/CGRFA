@@ -43,6 +43,11 @@
 				<div style="font-size: 11px;">Under Revision: <strong>{{survey.underRevision}}</strong></div>
 				<div style="font-size: 11px;">Rejected: <strong>{{survey.rejected}}</strong></div>
 			</div>
+			<div style="width: 35%; float: left;">
+				<div style="font-size: 10px; float: right; margin-top: 25px;">
+					<md-button class="md-raised md-warn" ng-click="deleteSurvey(survey.id)">Delete Survey</md-button>
+				</div>
+			</div>
 		</div>
 	</div>
 </div>

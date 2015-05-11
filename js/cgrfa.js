@@ -125,7 +125,48 @@ if (typeof String.prototype.startsWith != 'function') {
 	    	if (scopeArray.length > 0) {
 	    		$scope.listOfSurvey = scopeArray;
 	    	}
-	    });
+	    }, function errorCallback() {
+				$("#wait-loading").css("visibility", "hidden");
+			  	$mdDialog.show(
+			      $mdDialog.alert()
+			        .title('Error')
+			        .content('Ooopss... There was an error on the server...')
+			        .ariaLabel('Alert Dialog Demo')
+			        .ok('Got it!')
+			    );
+		});
+
+		$scope.deleteSurvey = function(id) {
+			var confirm = $mdDialog.confirm()
+		      .title('Do you really want to delete this Survey?')
+		      .content('If you delete this survey you wont be able to recover it')
+		      .ariaLabel('Lucky day')
+		      .ok('Please do it!')
+		      .cancel('Please No')
+		    $mdDialog.show(confirm).then(function() {
+		    	Restangular.one('deleteSurvey/' + id).get().then(function(response) {
+		    		var index = -1;
+		    		for (var i = 0; i < $scope.listOfSurvey.length; i++) {
+		    			if ($scope.listOfSurvey[i].id == id) {
+		    				index = i;
+		    				break;
+		    			}
+		    		}
+		    		if (index > -1) {
+		    			$scope.listOfSurvey.splice(index, 1);
+		    		}
+		    	}, function errorCallback() {
+				$("#wait-loading").css("visibility", "hidden");
+			  	$mdDialog.show(
+			      $mdDialog.alert()
+			        .title('Error')
+			        .content('Ooopss... There was an error on the server...')
+			        .ariaLabel('Alert Dialog Demo')
+			        .ok('Got it!')
+			    );
+		})
+		    });
+		}
 	}])
   .controller('formController', ['$route', '$routeParams', '$location', '$scope', '$mdDialog', '$http', 'Restangular',
 	function($route, $routeParams, $location, $scope, $mdDialog, $http, Restangular) {
@@ -152,13 +193,13 @@ if (typeof String.prototype.startsWith != 'function') {
 			window[APPLICATION_NAME].tables = {};
 			$scope.Answers = window[APPLICATION_NAME].answers;
 			$scope.headers = response['headers'];
-			/*FOR DEBUG*/
-			window[APPLICATION_NAME].headers = $scope.headers;
-			/*END FOR DEBUG*/
+
+			$scope.countriesDropDown = buildCountriesDropdown(response['insertedCountriesIDs']);
+
 			$scope.countries = window[APPLICATION_NAME].countries;
-			if (window[APPLICATION_NAME].headers.country != undefined && window[APPLICATION_NAME].headers.country != null) {
-				if (window[APPLICATION_NAME].headers.country.iso2 != undefined && window[APPLICATION_NAME].headers.country.iso2 != null) {
-					$scope.iso2 = window[APPLICATION_NAME].headers.country.iso2.toLowerCase();	
+			if (response['headers'].country != undefined && response['headers'].country != null) {
+				if (response['headers'].country.iso2 != undefined && response['headers'].country.iso2 != null) {
+					$scope.iso2 = response['headers'].country.iso2.toLowerCase();	
 				}
 			}
 			
@@ -513,6 +554,20 @@ function buildCountries() {
 	}
 	return countries.sort(compare);
 }
+
+function buildCountriesDropdown(insertedCountries) {
+	//window[APPLICATION_NAME]['cList'][16];
+	var result = [];
+	for (var k in window[APPLICATION_NAME]['cList'][16]) {
+		if (insertedCountries.indexOf(window[APPLICATION_NAME]['cList'][16][k]['key']) != -1) {
+			result.push({'id' : window[APPLICATION_NAME]['cList'][16][k]['key'], 'label' : window[APPLICATION_NAME]['cList'][16][k]['text_e'], 'selectable' : true});
+		} else {
+			result.push({'id' : window[APPLICATION_NAME]['cList'][16][k]['key'], 'label' : window[APPLICATION_NAME]['cList'][16][k]['text_e'], 'selectable' : false});
+		}
+	}
+	return result.sort(compare);
+}
+
 function compare(a,b) {
   if (a.label < b.label)
      return -1;
