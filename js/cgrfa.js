@@ -156,6 +156,12 @@ if (typeof String.prototype.startsWith != 'function') {
 			window[APPLICATION_NAME].headers = $scope.headers;
 			/*END FOR DEBUG*/
 			$scope.countries = window[APPLICATION_NAME].countries;
+			if (window[APPLICATION_NAME].headers.country != undefined && window[APPLICATION_NAME].headers.country != null) {
+				if (window[APPLICATION_NAME].headers.country.iso2 != undefined && window[APPLICATION_NAME].headers.country.iso2 != null) {
+					$scope.iso2 = window[APPLICATION_NAME].headers.country.iso2.toLowerCase();	
+				}
+			}
+			
 			$scope.Species = self.species = loadAll();
 			$scope.questionStatus = window[APPLICATION_NAME].questionStatus;
 			$scope.questions = rebuildResponse(response['questions'], response['controlledLists']);

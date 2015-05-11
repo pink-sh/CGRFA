@@ -1,30 +1,33 @@
 <form ng-submit="postSurvey()">
-	<div style="height: 30px; margin-bottom: 5px;">
+	<div style="position: fixed; width: 100%; margin-top: 120px; margin-right: 20px; margin-left: auto; right: 30px; z-index: 290;">
 		<div style="float: right;">
 			<md-button type="submit" class="md-raised md-primary">Save Survey</md-button>
 		</div>
 	</div>
-	<div class="single-question">
-		<div style="height: 30px; border-bottom: 1px solid #1F75B0; margin-top: 10px;">
-			Country: &nbsp;&nbsp;&nbsp;
-			<select name="headerCountries" ng-model="headers.country" style="padding: 2px !important; width: 300px;" required><option ng-repeat="country in countries" value="{{country.id}}" >{{country.label}}</option></select>
-		</div>
-		<div style="border-bottom: 1px solid #1F75B0; margin-top: 10px;">
-			<md-input-container flex>
-				<label>Prepared By</label>
-				<textarea ng-model="headers.preparedBy" ng-required="true" columns="1" id="txt_preparedBy">{{headers.preparedBy}}</textarea>
-			</md-input-container>
-		</div>
-
-		<div style="border-bottom: 1px solid #1F75B0; margin-top: 10px;">
-			Date: &nbsp;&nbsp;&nbsp;<input type="date" class="form-control" 
-									datepicker-popup ng-model="headers.date" 
-									is-open="opened" 
-									min-date="minDate" 
-									datepicker-options="dateOptions" 
-									ng-required="true" 
-									close-text="Close" 
-									style="width: 200px;"/>
+	<div class="single-question" style="height:120px; width:80%">
+		<div style="border-bottom: 1px solid #1F75B0; height: 110px;"> 
+			<div style="float: left; width: 31%; padding-top: 40px; padding-left: 30px;">
+				Country: &nbsp;&nbsp;&nbsp;
+				<select name="headerCountries" ng-model="headers.country" style="padding: 2px !important; width: 300px;" required><option ng-repeat="country in countries" value="{{country.id}}" >{{country.label}}</option></select>
+			</div>
+			<div class="divider-header"></div>
+			<div style="float: left; width: 31%;">
+				<md-input-container flex>
+					<label>Prepared By</label>
+					<textarea ng-model="headers.preparedBy" ng-required="true" columns="1" id="txt_preparedBy">{{headers.preparedBy}}</textarea>
+				</md-input-container>
+			</div>
+			<div class="divider-header"></div>
+			<div style="float: left; width: 31%; padding-top: 40px; padding-left: 120px;">
+				Date: &nbsp;&nbsp;&nbsp;<input type="date" class="form-control" 
+										datepicker-popup ng-model="headers.date" 
+										is-open="opened" 
+										min-date="minDate" 
+										datepicker-options="dateOptions" 
+										ng-required="true" 
+										close-text="Close" 
+										style="width: 200px;"/>
+			</div>
 		</div>
 	</div>
 

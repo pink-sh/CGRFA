@@ -1,23 +1,24 @@
 <form ng-submit="postSurvey()">
-	<div style="height: 30px; margin-bottom: 5px;">
+	<!--<div style="height: 30px; margin-bottom: 5px;">-->
+	<div style="position: fixed; width: 100%; margin-top: 120px; margin-right: 20px; margin-left: auto; right: 30px; z-index: 290;">
 		<div style="float: right;">
 			<md-button type="submit" class="md-raised md-primary">Save Survey</md-button>
 		</div>
 	</div>
-	<div class="single-question">
-		<div style="height: 30px; border-bottom: 1px solid #1F75B0; margin-top: 10px;">
-			Country: <strong>{{headers.country.nameEn}}</strong>
-			<input type="hidden" ng-model="headers.country.nameEn" ng-bind="headers.country.nameEn" value="{{headers.country.nameEn}}"/>
-		</div>
-		<div style="border-bottom: 1px solid #1F75B0; margin-top: 10px;">
-			<md-input-container flex>
-				<label>Prepared By</label>
-				<textarea ng-model="headers.preparedBy" columns="1" id="txt_preparedBy">{{headers.preparedBy}}</textarea>
-			</md-input-container>
-		</div>
-
-		<div style="border-bottom: 1px solid #1F75B0; margin-top: 10px;">
-			Date:&nbsp;<strong>{{headers.date}}</strong>
+	<div class="single-question" style="height:120px; width: 80% !important;">
+		<div style="border-bottom: 1px solid #1F75B0; height: 110px;"> 
+			<div style="float: left; width: 21%; padding-top: 15px; margin-left: auto; margin-right: auto;">
+				<img src="img/flags_iso/32/{{iso2}}.png"><br />
+				Country: <strong>{{headers.country.nameEn}}</strong><br/>
+				Date:&nbsp;<strong>{{headers.date}}</strong>
+			</div>
+			<div class="divider-header"></div>
+			<div style="float: left; width: 71%;">
+				<md-input-container flex>
+					<label>Prepared By</label>
+					<textarea ng-model="headers.preparedBy" ng-required="true" columns="1" id="txt_preparedBy">{{headers.preparedBy}}</textarea>
+				</md-input-container>
+			</div>
 		</div>
 	</div>
 

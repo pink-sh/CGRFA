@@ -79,6 +79,15 @@ md-content {
 	width: 20% !important;
 }
 
+.divider-header {
+	border-left: 1px solid #d4d4d4;
+	width: 1%;
+	margin-top: 20px;
+	height: 80px;
+	float: left;
+	margin-left: 15px;
+}
+
 .verticalLine_0 {
     width:1%; height: 70%; float:left; border-left: 1px solid #fafafa; margin-top: 22px;
 }
@@ -92,7 +101,7 @@ md-content {
     background-image: url('http://168.202.54.210/cgrfa/img/splash-bg.png');
     background-repeat: repeat;
     position: absolute;
-    z-index: 100;
+    z-index: 300;
     visibility: hidden;
 }
 
@@ -330,6 +339,10 @@ md-grid-list { background-color: #eeeeee; }
   background: #ff8a80; }
 .gridListdemoBasicUsage md-grid-tile {
   transition: all 400ms ease-out 50ms; }
+
+.form-control {
+	display: inline-block !important;
+}
 
 
 
