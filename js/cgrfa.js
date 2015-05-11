@@ -184,6 +184,7 @@ if (typeof String.prototype.startsWith != 'function') {
 			} else {
 				window[APPLICATION_NAME].tables[table] = window[APPLICATION_NAME].tables[table] + 1;
 			}
+			window[APPLICATION_NAME].response[table-1].tables[0].multiCount = window[APPLICATION_NAME].response[table-1].tables[0].multiCount + 1;
 			var originalRow = window[APPLICATION_NAME].response[table-1].tables[0].matrix[row];
 			var newRow = $.extend(true,{},originalRow);
 			for (var cell in newRow.cells) {
@@ -191,6 +192,7 @@ if (typeof String.prototype.startsWith != 'function') {
 					var htmlId = getNewID(newRow.cells[cell].fields[field]['htmlId'], table);
 					newRow.cells[cell].fields[field]['htmlId'] = htmlId;
 					newRow.cells[cell].fields[field].value = null;
+					newRow.cells[cell].fields[field].original = null;
 					delete newRow.cells[cell].fields[field].renderDropDown;
 					delete newRow.cells[cell].fields[field].renderCheckBox;
 					if (newRow.cells[cell].fields[field].type == 3) {
@@ -217,6 +219,7 @@ if (typeof String.prototype.startsWith != 'function') {
 		      .ok('Please do it!')
 		      .cancel('Please No')
 		    $mdDialog.show(confirm).then(function() {
+		    	window[APPLICATION_NAME].response[table-1].tables[0].multiCount = window[APPLICATION_NAME].response[table-1].tables[0].multiCount - 1;
 		    	for (var i = 0; i < $scope.questions[table-1].tables[0].matrix[row].cells.length; i++) {
 		    		var cell = $scope.questions[table-1].tables[0].matrix[row].cells[i];
 		    		for (var j = 0; j < cell.fields.length; j++) {

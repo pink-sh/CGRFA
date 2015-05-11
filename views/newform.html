@@ -85,8 +85,13 @@
 									</div>  
 								</div>
 								<div ng-if="row.multi == 1 && $index == row.cells.length - 1" style="position: absolute; bottom: 2px; right: 0;">
-									<md-button type="button" class="md-raised md-primary add-romove-button" ng-click="removeRow($event, questionCounter+1, myRowCounter);">-</md-button>
-									<md-button type="button" class="md-raised md-primary add-romove-button" ng-click="addRow(questionCounter+1, myRowCounter);">+</md-button>
+									<div ng-if="table.multiCount > 1">
+										<md-button type="button" class="md-raised md-primary add-romove-button" ng-click="removeRow($event, questionCounter+1, myRowCounter);">-</md-button>
+										<md-button type="button" class="md-raised md-primary add-romove-button" ng-click="addRow(questionCounter+1, myRowCounter);">+</md-button>
+									</div>
+									<div ng-if="table.multiCount < 2">
+										<md-button type="button" class="md-raised md-primary add-romove-button" ng-click="addRow(questionCounter+1, myRowCounter);">+</md-button>
+									</div>
 								</div>
 							</div>
 
@@ -152,8 +157,13 @@
 									</div>
 								</div>
 								<div ng-if="row.multi == 1 && $index == row.cells.length - 1" style="position: absolute; bottom: 2px; right: 0;">
-									<md-button type="button" class="md-raised md-primary add-romove-button" ng-click="removeRow($event, questionCounter+1, myRowCounter);">-</md-button>
-									<md-button type="button" class="md-raised md-primary add-romove-button" ng-click="addRow(questionCounter+1, myRowCounter);">+</md-button>
+									<div ng-if="table.multiCount > 1">
+										<md-button type="button" class="md-raised md-primary add-romove-button" ng-click="removeRow($event, questionCounter+1, myRowCounter);">-</md-button>
+										<md-button type="button" class="md-raised md-primary add-romove-button" ng-click="addRow(questionCounter+1, myRowCounter);">+</md-button>
+									</div>
+									<div ng-if="table.multiCount < 2">
+										<md-button type="button" class="md-raised md-primary add-romove-button" ng-click="addRow(questionCounter+1, myRowCounter);">+</md-button>
+									</div>
 								</div>
 							</div>
 						</div> 
