@@ -482,6 +482,9 @@ function buildDropdown(field, cList) {
 }
 
 function buildCheckBox(field, cList) {
+	if (field.name == "q8_chk1") {
+		console.debug ("q8_chk1");
+	}
 	var checkbox = [];
 	var counter = 0;
 	for (var key in cList[field.controlledList]) {
@@ -501,7 +504,11 @@ function buildCheckBox(field, cList) {
 			}
 		}
 	} else if (field.controlledList == 0) {
-		if (field.value != null) {
+		if (field.value == 0) {
+			checkbox.push({'key' : parseInt(field.default_value), 'value' : field.text_e, 'id' : field.htmlId, selected : 'null'});
+			window[APPLICATION_NAME].answers[field.htmlId] = 'null';
+		}
+		else if (field.value != null) {
 			checkbox.push({'key' : parseInt(field.value), 'value' : field.text_e, 'id' : field.htmlId, selected : parseInt(field.default_value)});
 			window[APPLICATION_NAME].answers[field.htmlId] = parseInt(field.value);
 		} else {
