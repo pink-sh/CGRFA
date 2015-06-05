@@ -1,6 +1,6 @@
 var APPLICATION_NAME = 'AqGR';
 var BASE_URL = "http://168.202.54.210:8080/CGRFA/";
-var DEBUG = false;
+var DEBUG = true;
 var TITLE = "Aquatic Genetic Resources Questionnaire Tools"
 //var BASE_URL = "http://168.202.54.210/cgrfa/";
 
