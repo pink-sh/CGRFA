@@ -1,6 +1,6 @@
 var APPLICATION_NAME = 'AqGR';
 var BASE_URL = "http://168.202.54.210:8080/CGRFA/";
-var DEBUG = true;
+var DEBUG = false;
 var TITLE = "Aquatic Genetic Resources Questionnaire Tools"
 //var BASE_URL = "http://168.202.54.210/cgrfa/";
 
@@ -239,6 +239,7 @@ if (typeof String.prototype.startsWith != 'function') {
 					var htmlId = getNewID(newRow.cells[cell].fields[field]['htmlId'], table);
 					newRow.cells[cell].fields[field]['htmlId'] = htmlId;
 					newRow.cells[cell].fields[field].value = null;
+					newRow.cells[cell].fields[field].value_opt = null;
 					newRow.cells[cell].fields[field].original = null;
 					delete newRow.cells[cell].fields[field].renderDropDown;
 					delete newRow.cells[cell].fields[field].renderCheckBox;
@@ -251,6 +252,9 @@ if (typeof String.prototype.startsWith != 'function') {
 					}
 					if (newRow.cells[cell].fields[field].type != 3 && newRow.cells[cell].fields[field].type != 6) {
 						window[APPLICATION_NAME].answers[htmlId] = newRow.cells[cell].fields[field].value;
+						if (newRow.cells[cell].fields[field].type == 9) {
+							window[APPLICATION_NAME].answers[htmlId + "![autosuggestcode]"] = null;
+						}
 					}
 				}
 			}
@@ -279,7 +283,8 @@ if (typeof String.prototype.startsWith != 'function') {
 		}
 
 		$scope.selectedTypeAheadValue = function(a, b, c, id) {
-			$scope.Answers[id] = a.value;
+			$scope.Answers[id] = a.display;
+			$scope.Answers[id + '![autosuggestcode]'] = a.value;
 		}
 
 		function loadAll() {
@@ -442,17 +447,22 @@ function rebuildResponse(response, cList) {
 							window[APPLICATION_NAME].answers[field['htmlId']] = buildSelectedBox(field);
 						}
 						else if (field.type == 9) {
-							var autoSugVal = "";
-							var cListIndex = response[k1].tables[k2].matrix[k3]['cells'][k4].fields[k5]['controlledList'];
-							for (var index in cList[cListIndex]) {
-								var cListEntry = cList[cListIndex][index]
-								if (cListEntry.key == response[k1].tables[k2].matrix[k3]['cells'][k4].fields[k5]['value']) {
-									autoSugVal = cList[cListIndex][index]['text_e'];
-									break;
+							if (field['htmlId'] != null) {
+								var autosuggestValue = "";
+								var autosuggestCode  = "";
+								if (field['value_opt'] != null && field['value_opt'] != 'null') {
+									autosuggestValue = field['value_opt'];
 								}
+								if (field['value'] != null && field['value'] != 'null') {
+									autosuggestCode = field['value'];
+								}
+								var newHtmlId = field['htmlId'] + "![autosuggest]";
+								response[k1].tables[k2].matrix[k3]['cells'][k4].fields[k5]['htmlId'] = newHtmlId;
+								response[k1].tables[k2].matrix[k3]['cells'][k4].fields[k5]['value'] = autosuggestCode;
+								response[k1].tables[k2].matrix[k3]['cells'][k4].fields[k5]['value_opt'] = autosuggestValue;
+								window[APPLICATION_NAME].answers[newHtmlId] = autosuggestValue;
+								window[APPLICATION_NAME].answers[newHtmlId + "![autosuggestcode]"] = autosuggestCode;
 							}
-							response[k1].tables[k2].matrix[k3]['cells'][k4].fields[k5]['original'] = autoSugVal;
-							window[APPLICATION_NAME].answers[field['htmlId']] = field['value'];
 						} else {
 							window[APPLICATION_NAME].answers[field['htmlId']] = field['value'];
 						}
@@ -482,9 +492,6 @@ function buildDropdown(field, cList) {
 }
 
 function buildCheckBox(field, cList) {
-	if (field.name == "q8_chk1") {
-		console.debug ("q8_chk1");
-	}
 	var checkbox = [];
 	var counter = 0;
 	for (var key in cList[field.controlledList]) {
@@ -593,6 +600,9 @@ var sort_by = function(field, reverse, primer){
 }
 
 function getNewID(id, table) {
+	if (id == undefined || id == null) {
+		return null;
+	}
 	var newId = "NEWROW";
 	var splittedId = id.split("!");
 	newId = newId + "[" + window[APPLICATION_NAME].tables[table] + "]";
