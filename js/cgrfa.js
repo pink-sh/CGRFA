@@ -44,6 +44,9 @@ if (typeof String.prototype.startsWith != 'function') {
 					controller: 'listSurveyController',
 					controllerAs: 'list'
 				})
+				.when('/getEmptySurvey/', {
+					templateUrl: 'views/getEmptySurvey.html',
+				})
 				.when('/upload/', {
 					templateUrl: 'views/upload.html',
 					controller: 'uploadController',

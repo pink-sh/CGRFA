@@ -70,22 +70,23 @@
       <img src="img/ajax-loader.gif">
   </div>
   <div class="main-top">
-  	<iframe id="banner" src="banner/" width="100%" height="75" border="0" frameborder="0" scrolling="no"></iframe>
+    <iframe id="banner" src="banner/" width="100%" height="75" border="0" frameborder="0" scrolling="no"></iframe>
     <div class="main-nav">
       <nav class="navbar navbar-default" role="navigation" bs-navbar>
   <div class="navbar-header">
     <a class="navbar-brand" href="/cgrfa/">Home</a>
   </div>
   <ul class="nav navbar-nav">
-    <li data-match-route="/upload"><a href="/cgrfa/upload">Upload a survey</a></li>
-    <li data-match-route="/list"><a href="/cgrfa/list">Inserted surveys</a></li>
-    <li data-match-route="/newForm"><a href="/cgrfa/newForm">New survey</a></li>
+    <li data-match-route="/upload"><a href="upload/">Upload a survey</a></li>
+    <li data-match-route="/list"><a href="list/">Inserted surveys</a></li>
+    <li data-match-route="/newForm"><a href="newForm/">New survey</a></li>
+    <li data-match-route="/getEmptySurvey"><a href="getEmptySurvey/">Get Empty PDF Survey</a></li>
   </ul>
 </nav>
     </div>
   </div>
 
-   	<div ng-controller="uploadController" ng-cloak layout="column">
+    <div ng-controller="uploadController" ng-cloak layout="column">
       <md-content flex layout-padding style="background-color: #eeeeee; top: 150px;">
         <div ng-view></div>
       </md-content>
