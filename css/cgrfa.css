@@ -170,6 +170,17 @@ md-content {
 	height: 30px;
 	width: 20px;
 }
+.cgrfaFooter {
+	position: fixed; 
+	bottom:0;	
+	background-image: url("greyTbg.png");
+	background-repeat: repeat-x;
+	height: 40px;
+	width: 99%;
+	font-size: 0.8em;
+	text-align: center;
+	padding-top: 7px;
+}
 
 select {
 	border: 0 !important;  /*Removes border*/
