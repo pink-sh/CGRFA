@@ -30,10 +30,13 @@
 						Date: <b>{{survey.date}}</b>
 					</div>
 					<div>
-						Prepared By: <b>{{survey.preparedBy}}</b>
+						Prepared By: <b>{{survey.preparedBy | limitTo:40}}<span ng-if="survey.preparedBy.length > 40">...</span></b>
 					</div>
 					<div ng-if="survey.file != null">
 						Original PDF: <a href="{{survey.file}}" target="_blank"><img src="img/pdf.png" height="25px" width="25px"></a>
+					</div>
+					<div ng-if="survey.logFile != null">
+						Log of the import: <a href="{{survey.logFile}}" target="_blank"><img src="img/txtFile.png" height="25px" width="25px"></a>
 					</div>
 				</div>
 			</div>

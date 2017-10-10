@@ -16,7 +16,7 @@
     'use strict';
 
     var isOnGitHub = window.location.hostname === 'blueimp.github.io',
-        url = isOnGitHub ? 'http://168.202.54.210:8080/CGRFA/upload' : 'http://168.202.54.210:8080/CGRFA/upload';
+        url = isOnGitHub ? 'http://10.202.54.45:8080/CGRFA/upload' : 'http://10.202.54.45:8080/CGRFA/upload';
 
     angular.module('demo', [
         'blueimp.fileupload'

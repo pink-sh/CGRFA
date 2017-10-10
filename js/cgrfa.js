@@ -1,5 +1,5 @@
 var APPLICATION_NAME = 'AqGR';
-var BASE_URL = "http://168.202.54.210:8080/CGRFA/";
+var BASE_URL = "http://10.202.54.45:8080/CGRFA/";
 var DEBUG = false;
 var TITLE = "Aquatic Genetic Resources Questionnaire Tools"
 //var BASE_URL = "http://168.202.54.210/cgrfa/";
@@ -109,6 +109,11 @@ if (typeof String.prototype.startsWith != 'function') {
 	    			singleSurvey.file = BASE_URL + "getFile/" + response[i].originalPDF;
 	    		} else {
 	    			singleSurvey.file = null;
+	    		}
+	    		if (response[i].logFile != undefined && response[i].logFile != null && response[i].logFile != '') {
+	    			singleSurvey.logFile = BASE_URL + "getFile/" + response[i].logFile;
+	    		} else {
+	    			singleSurvey.logFile = null;
 	    		}
 	    		singleSurvey.overall = response[i].overallStatus;
 	    		if (singleSurvey.overall == 0) {
